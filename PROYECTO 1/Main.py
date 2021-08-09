@@ -40,7 +40,7 @@ def crearArchivos():
 
 # menú principal y main del programa
 while(True):
-    print("###################### BIENVENIDO AL PROYECTO R2E2 ######################")
+    print("======================== BIENVENIDO AL PROYECTO R2E2 ========================")
     print("============Menú principal============")
     print("1. Cargar archivo")
     print("2. Procesar terreno")
