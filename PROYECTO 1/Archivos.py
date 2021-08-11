@@ -34,27 +34,37 @@ def analizarArchivo(archivo):
         y = posicion.getElementsByTagName("y")[0]
         posInicio = [int(x.firstChild.data), int(y.firstChild.data)] # posicion de inicio (x, y)       
         
-        # poisción final de los terrenos
+        # posición final de los terrenos
         posicion = terreno.getElementsByTagName("posicionfin")[0]
         x = posicion.getElementsByTagName("x")[0]
         y = posicion.getElementsByTagName("y")[0]
         posFin = [int(x.firstChild.data), int(y.firstChild.data)] # posición de fin (x, y)
 
+        # posiciones de las matrices y las unidades de gasolina 
+        posiciones = terreno.getElementsByTagName("posicion")
+        listPosiciones = []
+        for posicion in posiciones:
+            x = posicion.getAttribute("x")
+            y = posicion.getAttribute("y")
+            gas = posicion.firstChild.data
+            listPosiciones.append([int(x),int(y),int(gas)])
+        print(listPosiciones)
+
         # aquí agregamos cada terreno en la lista enlazada
-        listTerrenos.append(Terreno(nombre, posInicio, posFin, dimension)) 
-        
+        listTerrenos.append(Terreno(nombre, posInicio, posFin, dimension, listPosiciones)) 
+
     # probando la lista enlazada...
-    for terreno in listTerrenos.iterate():
-        print(terreno.nombre)
-        print(terreno.pi)
-        print(terreno.pf)
-    print(len(listTerrenos))
-    print(listTerrenos.findTerreno("terreno1"))
-    print(listTerrenos.findTerreno("terreno8"))
-    print(listTerrenos[1].nombre)
-    print(listTerrenos[20])
-    listTerrenos.remove("terreno1")
-    print(len(listTerrenos))
+    # for terreno in listTerrenos.iterate():
+    #     print(terreno.nombre)
+    #     print(terreno.pi)
+    #     print(terreno.pf)
+    # print(len(listTerrenos))
+    # print(listTerrenos.findTerreno("terreno1"))
+    # print(listTerrenos.findTerreno("terreno8"))
+    # print(listTerrenos[1].nombre)
+    # print(listTerrenos[20])
+    # listTerrenos.remove("terreno1")
+    # print(len(listTerrenos))
 
 def crearArchivo(ruta):
     archivo = open(ruta, 'w')
