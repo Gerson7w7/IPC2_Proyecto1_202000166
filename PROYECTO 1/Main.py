@@ -12,7 +12,7 @@ def menu():
         elif(menu == 3):
             crearArchivos()
         elif(menu == 4):
-            print("HOLA2")
+            datosEstudiante()
         elif(menu == 5):
             print("HOLA3")
         elif(menu == 6):
@@ -27,7 +27,8 @@ def menu():
 def cargarArchivos():
     print("====================CARGAR ARCHIVOS====================")
     print("Ingrese la ruta absoluta del archivo:")
-    ruta = input()
+    #ruta = input()
+    ruta = "C:\\Users\\gerso\\Desktop\\PROGRAMACIÓN\\Python\\IPC2\\IPC2_Proyecto1\\PROYECTO 1\\terrenos.xml"
     cargarArchivo(ruta)
 
 
@@ -36,6 +37,14 @@ def crearArchivos():
     print("Ingrese una ruta absoluta y nombre donde se guardará:")
     ruta = input()
     crearArchivo(ruta)
+
+def datosEstudiante():
+    print("==================== Datos del Estudiante================")
+    print(">Gerson Rubén Quiroa del Cid")
+    print(">202000166")
+    print(">Introducción a la programación y computación 2 sección A")
+    print(">Ingeniería en Ciencias y Sistemas")
+    print(">Cuarto semestre")
 
 
 # menú principal y main del programa
