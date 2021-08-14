@@ -1,21 +1,21 @@
 import xml.dom.minidom 
-from Terreno import Terreno
+from Clases import Terreno, Posicion
 from ListaEnlazada import LinkedList
 
-def cargarArchivo(ruta): # abre la ruta del archivo donde se encuentra el xml
+def cargarArchivo(ruta, listTerrenos): # abre la ruta del archivo donde se encuentra el xml
     try:
         archivo = open(ruta, 'r') # modo lectura
         if(archivo.name[-4:] == ".xml"): # lee el archivo solamente si es extensión xml
-            analizarArchivo(archivo)
+            listTerrenos = analizarArchivo(archivo, listTerrenos)
         else:
             print("Solo se adminten archivos con extensión .xml")    
         archivo.close()
     except FileNotFoundError:
         print("Archivo no encontrado :(")
-        
+    return listTerrenos
 
-def analizarArchivo(archivo):
-    listTerrenos = LinkedList() # instancia de la clase lista enlazada
+
+def analizarArchivo(archivo, listTerrenos):
     xmlDoc = xml.dom.minidom.parse(archivo) # para manejar el xml con las etiquetas
     data = xmlDoc.documentElement
     terrenos = data.getElementsByTagName("terreno") # lo separa por terrenos en una lista
@@ -26,45 +26,33 @@ def analizarArchivo(archivo):
         posicion = terreno.getElementsByTagName("dimension")[0]
         m = posicion.getElementsByTagName("m")[0]
         n = posicion.getElementsByTagName("n")[0]
-        dimension = [int(m.firstChild.data), int(n.firstChild.data)]
+        dimension = Posicion(int(n.firstChild.data), int(m.firstChild.data))
 
         # posición de inicio de los terrenos
         posicion = terreno.getElementsByTagName("posicioninicio")[0]
         x = posicion.getElementsByTagName("x")[0]
         y = posicion.getElementsByTagName("y")[0]
-        posInicio = [int(x.firstChild.data), int(y.firstChild.data)] # posicion de inicio (x, y)       
+        posInicio = Posicion(int(x.firstChild.data), int(y.firstChild.data)) # posicion de inicio (x, y)       
         
         # posición final de los terrenos
         posicion = terreno.getElementsByTagName("posicionfin")[0]
         x = posicion.getElementsByTagName("x")[0]
         y = posicion.getElementsByTagName("y")[0]
-        posFin = [int(x.firstChild.data), int(y.firstChild.data)] # posición de fin (x, y)
+        posFin = Posicion(int(x.firstChild.data), int(y.firstChild.data)) # posición de fin (x, y)
 
         # posiciones de las matrices y las unidades de gasolina 
         posiciones = terreno.getElementsByTagName("posicion")
-        listPosiciones = []
+        listPosiciones = LinkedList()
         for posicion in posiciones:
             x = posicion.getAttribute("x")
             y = posicion.getAttribute("y")
             gas = posicion.firstChild.data
-            listPosiciones.append([int(x),int(y),int(gas)])
-        print(listPosiciones)
+            listPosiciones.append(Posicion(int(x), int(y), int(gas)))
 
         # aquí agregamos cada terreno en la lista enlazada
         listTerrenos.append(Terreno(nombre, posInicio, posFin, dimension, listPosiciones)) 
+    return listTerrenos
 
-    # probando la lista enlazada...
-    # for terreno in listTerrenos.iterate():
-    #     print(terreno.nombre)
-    #     print(terreno.pi)
-    #     print(terreno.pf)
-    # print(len(listTerrenos))
-    # print(listTerrenos.findTerreno("terreno1"))
-    # print(listTerrenos.findTerreno("terreno8"))
-    # print(listTerrenos[1].nombre)
-    # print(listTerrenos[20])
-    # listTerrenos.remove("terreno1")
-    # print(len(listTerrenos))
 
 def crearArchivo(ruta):
     archivo = open(ruta, 'w')

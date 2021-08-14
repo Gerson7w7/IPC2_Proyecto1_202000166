@@ -74,15 +74,3 @@ class LinkedList(object):
     # sobre escritura de la función len, para que devuelva el tamaño de la lista
     def __len__(self):
         return self.size
-
-    # sobre escritura de la función str, para que imprima la lista
-    def __str__(self):
-        string = "["
-        current = self.first
-        for i in range(len(self)):
-            string += str(current)
-            if i != len(self) - 1:
-                string += str(", ")
-            current = current.next
-        string += "]"
-        return string

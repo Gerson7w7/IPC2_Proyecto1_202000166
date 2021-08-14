@@ -5,3 +5,9 @@ class Terreno(object):
         self.pf = pf # posicion final (x, y)
         self.dim = dim # dimension de la matriz (m, n)
         self.posiciones = posiciones # posiciones ((x1, y2, gas)...(xn, yn, gas))
+
+class Posicion(object):
+    def __init__(self, x, y, gas = None):
+        self.x = x
+        self.y = y
+        self.gas = gas
