@@ -11,3 +11,6 @@ class Posicion(object):
         self.x = x
         self.y = y
         self.gas = gas
+        self.flag = False
+        self.posAnt = None
+        self.acumulado = 0

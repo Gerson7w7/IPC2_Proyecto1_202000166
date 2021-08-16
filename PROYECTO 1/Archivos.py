@@ -7,6 +7,7 @@ def cargarArchivo(ruta, listTerrenos): # abre la ruta del archivo donde se encue
         archivo = open(ruta, 'r') # modo lectura
         if(archivo.name[-4:] == ".xml"): # lee el archivo solamente si es extensión xml
             listTerrenos = analizarArchivo(archivo, listTerrenos)
+            print("Archivo cargado con éxito :D")
         else:
             print("Solo se adminten archivos con extensión .xml")    
         archivo.close()
