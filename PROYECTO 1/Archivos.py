@@ -44,6 +44,7 @@ def analizarArchivo(archivo, listTerrenos):
         # posiciones de las matrices y las unidades de gasolina 
         posiciones = terreno.getElementsByTagName("posicion")
         listPosiciones = LinkedList()
+        listPosiciones2 = LinkedList()
         for posicion in posiciones:
             x = posicion.getAttribute("x")
             y = posicion.getAttribute("y")
@@ -55,9 +56,72 @@ def analizarArchivo(archivo, listTerrenos):
     return listTerrenos
 
 
-def crearArchivo(ruta):
+def crearArchivo(ruta, listTerrenos):
+    # creando el archivo xml
+    DOMimp = xml.dom.minidom.getDOMImplementation()
+    xmlDoc = DOMimp.createDocument(None, "terrenos", None)
+    # raíz del archivo
+    docRoot = xmlDoc.documentElement
+    
+    # por cada terreno creamos un nodo
+    for terreno in listTerrenos.iterate():
+        if terreno.analizado == True:
+            # nodo terreno
+            terr = xmlDoc.createElement("terreno")
+
+            # sub nodo dimensión
+            dim = xmlDoc.createElement("dimension")
+            m = xmlDoc.createElement("m")
+            m.appendChild(xmlDoc.createTextNode(str(terreno.dim.y)))
+            n = xmlDoc.createElement("n")
+            n.appendChild(xmlDoc.createTextNode(str(terreno.dim.x)))
+            # agregando m y n al sub nodo dimensión
+            dim.appendChild(m)
+            dim.appendChild(n)
+            terr.appendChild(dim)
+
+            # sub nodo posicioninicial
+            posicion = xmlDoc.createElement("posicioninicial")
+            x = xmlDoc.createElement("x")
+            x.appendChild(xmlDoc.createTextNode(str(terreno.pi.x)))
+            y = xmlDoc.createElement("y")
+            y.appendChild(xmlDoc.createTextNode(str(terreno.pi.y)))
+            # agregamos x, y al sub nodo posicioninicial
+            posicion.appendChild(x)
+            posicion.appendChild(y)
+            terr.appendChild(posicion)
+
+            # sub nodo posicionfinal
+            posicion = xmlDoc.createElement("posicionfinal")
+            x = xmlDoc.createElement("x")
+            x.appendChild(xmlDoc.createTextNode(str(terreno.pf.x)))
+            y = xmlDoc.createElement("y")
+            y.appendChild(xmlDoc.createTextNode(str(terreno.pf.y)))
+            # agregamos x, y al sub nodo posicioninicial
+            posicion.appendChild(x)
+            posicion.appendChild(y)
+            terr.appendChild(posicion)
+
+            for pos in terreno.lRecorrido.iterate():
+                if pos.x == terreno.pf.x and pos.y == terreno.pf.y:
+                    # sub nodo combustible
+                    gas = xmlDoc.createElement("combustible")
+                    gas.appendChild(xmlDoc.createTextNode(str(pos.acumulado)))
+                    terr.appendChild(gas)
+                # sub nodo posicion 
+                posicion = xmlDoc.createElement("posicion")
+                posicion.setAttribute("x", str(pos.x))
+                posicion.setAttribute("y", str(pos.y))
+                posicion.appendChild(xmlDoc.createTextNode("1"))
+                # agregamos x, y al sub nodo posicioninicial
+                terr.appendChild(posicion)
+
+            # añadimos el nodo terreno a la raíz del archivo
+            docRoot.appendChild(terr)
+
+    # guardando el fichero en la ruta especificada
     archivo = open(ruta, 'w')
-    #Lógica para escribir el archivo
+    archivo.write(xmlDoc.toxml())
     archivo.close()
-    print("Se ha escrito el archivo con éxito.")
+    print("Se ha escrito el archivo con éxito! :D")
 

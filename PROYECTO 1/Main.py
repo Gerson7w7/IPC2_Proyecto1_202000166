@@ -10,9 +10,9 @@ def menu(listTerrenos):
         if(menu == 1):
             listTerrenos = cargarArchivos(listTerrenos)           
         elif(menu == 2):
-            caminoTerreno = procesarTerreno(listTerrenos)
+            procesarTerreno(listTerrenos)
         elif(menu == 3):
-            crearArchivos()
+            crearArchivos(listTerrenos)
         elif(menu == 4):
             datosEstudiante()
         elif(menu == 5):
@@ -35,11 +35,13 @@ def cargarArchivos(listTerrenos):
     return listTerrenos
 
 
-def crearArchivos():
+def crearArchivos(listTerrenos):
     print("====================ESCRIBIR ARCHIVOS====================")
     print("Ingrese una ruta absoluta y nombre donde se guardará:")
-    ruta = input()
-    crearArchivo(ruta)
+    print("NOTA: Solo se escribirán los terrenos que hayan sido analizados.")
+    # ruta = input()
+    ruta = "C:\\Users\\gerso\\Desktop\\PROGRAMACIÓN\\Python\\IPC2\\IPC2_Proyecto1\\PROYECTO 1\\prueba.xml"
+    crearArchivo(ruta, listTerrenos)
 
 
 def datosEstudiante():
@@ -51,22 +53,26 @@ def datosEstudiante():
     print(">Cuarto semestre")
 
 def procesarTerreno(listTerrenos):
-    caminoTerreno = "" # objeto terreno, con el camino procesado
     flag = False
     if listTerrenos.size != 0:
         nombreTerreno = input("Ingrese el nombre del terreno que quiere analizar: \n")
 
         # buscando el terreno a procesar
+        print("Buscando terreno...")
         for terreno in listTerrenos.iterate():
             if terreno.nombre == nombreTerreno:
-                caminoTerreno = camino(terreno)
-                flag = True
-
-        # verificando si se procesó el terreno o no se encontró        
-        if flag:
-            print("Terreno procesado con éxito")
-        else: 
-            print("No se ha encontrado el terreno, intente con otro nombre.")
+                if terreno.analizado == False:
+                    terreno.analizado = True
+                    caminoTerreno = camino(terreno)
+                    flag = True
+                    # verificando si se procesó el terreno o no se encontró        
+                    if flag:
+                        print("Terreno procesado con éxito! :D")
+                    else: 
+                        print("No se ha encontrado el terreno, intente con otro nombre.")
+                else: 
+                    print("Este terreno ya ha sido analizado")
+                    break
     else:
         print("No se ha cargado ningún archivo")
     return caminoTerreno

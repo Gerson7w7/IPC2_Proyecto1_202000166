@@ -114,8 +114,8 @@
     </terreno>
     <terreno nombre="terreno4">
         <dimension>
-            <m>3</m>
-            <n>6</n>
+            <m>7</m>
+            <n>7</n>
         </dimension>
         <posicioninicio>
             <x>5</x>

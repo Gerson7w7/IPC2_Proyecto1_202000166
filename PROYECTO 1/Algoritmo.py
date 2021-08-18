@@ -1,60 +1,85 @@
 from Clases import Posicion
+from ListaEnlazada import LinkedList
+
+# sinceramente ni yo sé como logré hacer este algoritmo xd 
+# no es tan preciso pero encuentra la mejor ruta!
 
 def camino(terreno):
     gas = []
+    print("Analizando terreno...")
     for pos in terreno.posiciones.iterate():
+        # encuentra la posicion inicial dentro de todas las posiciones
         if terreno.pi.x == pos.x and terreno.pi.y == pos.y:
             pos.flag = True
-            pos.acumulado = pos.gas
+            gas.append(pos)
             posicion(pos, terreno, gas)
             break
-    
 
-def posicion(pos, terreno, gas):
+
+# pos: posición actual
+# acumulado: gasolina acumulado
+# gas: gasolina por posición
+def posicion(pos, terreno, gas):   
     if(terreno.pf.x == pos.x and terreno.pf.y == pos.y):
-        print("Camino calculado")
+        print("Buscando la mejor ruta...")
+        recorrido(pos, terreno) 
+        # si llega a la posición final, se termina la recursividad.
     else:
-        if gas != []:
-            gas.pop(0)
-        # norte 
+        gas.pop(0)
+        # norte
+        # le resta una posición si es diferente de 1
         if pos.y != 1:
             n = Posicion(pos.x, pos.y - 1)
-            if not(n.x == pos.posAnt.x and n.y == pos.posAnt.y):
-                gasN = consumo(n, terreno, pos)
+            gasN = consumo(n, terreno, pos)
+            if not(gasN == None):
+                gasN.posAnt.append(pos)
                 gas.append(gasN)
+
         # oeste
+        # le resta una posición si es diferente de 1
         if pos.x != 1:
             o = Posicion(pos.x - 1, pos.y)
-            if not(o.x == pos.posAnt.x and o.y == pos.posAnt.y):
-                gasO = consumo(o, terreno, pos)
+            gasO = consumo(o, terreno, pos)
+            if not(gasO == None):
+                gasO.posAnt.append(pos)
                 gas.append(gasO)
+
         # sur
+        # le suma una posición si es diferente del límite
         if pos.y != terreno.dim.y:
             s = Posicion(pos.x, pos.y + 1)
-            if not(s.x == pos.posAnt.x and s.y == pos.posAnt.y):
-                gasS = consumo(s, terreno, pos) 
+            gasS = consumo(s, terreno, pos)
+            if not(gasS == None):
+                gasS.posAnt.append(pos)
                 gas.append(gasS)
-        # este 
-        if pos.x != terreno.dim.x: 
+
+        # este
+        # le suma una posición si es diferente del límite
+        if pos.x != terreno.dim.x:
             e = Posicion(pos.x + 1, pos.y)
-            if not(e.x == pos.posAnt.x and e.y == pos.posAnt.y):
-                gasE = consumo(e, terreno, pos)
+            gasE = consumo(e, terreno, pos)
+            if not(gasE == None):
+                gasE.posAnt.append(pos)
                 gas.append(gasE)
 
+        # ordeno la lista de gas en forma ascendente
         bubbleSortASC(gas)
+        # la siguiente posición será la primera de la lista
         nextPosicion = gas[0]
-        nextPosicion.posAnt = pos
         nextPosicion.flag = True
-        print(nextPosicion.x, nextPosicion.y, nextPosicion.acumulado, nextPosicion.gas)
+        # print(nextPosicion.x, nextPosicion.y,
+        #       nextPosicion.acumulado, nextPosicion.gas)
         posicion(nextPosicion, terreno, gas)
-        
-    
+
 
 def consumo(nextPosicion, terreno, pos):
-    for posicion in terreno.posiciones.iterate():
+    # buscando en la matriz de posiciones del terrreno
+    for posicion in terreno.posiciones.iterate():  
         if posicion.x == nextPosicion.x and posicion.y == nextPosicion.y:
-            posicion.acumulado = pos.acumulado + posicion.gas
-            return posicion
+            # si no es el pivote será la nueva posición 
+            if posicion.flag != True:
+                posicion.acumulado = pos.acumulado + posicion.gas
+                return posicion
     return None
 
 
@@ -74,3 +99,19 @@ def bubbleSortASC(gas):  # algoritmo de ordenamiento ascendente
         # entonces se para con un break
         if swapped == False:
             break
+
+# lo que hace esta función es agregar a una lista solo las posiciones donde pasará el robot
+def recorrido(pos, terreno):
+    print("Calculando gasolina...")
+    listRecorrido = LinkedList()
+    listRecorrido.append(pos)
+    
+    while(not(pos.x == terreno.pi.x and pos.y == terreno.pi.y)):   
+            bubbleSortASC(pos.posAnt)
+            pos = pos.posAnt[0]
+            listRecorrido.append(pos)
+    terreno.lRecorrido = listRecorrido
+    print("Camino calculado")
+
+    # for r in terreno.lRecorrido.iterate():
+    #     print(r.x, r.y)
