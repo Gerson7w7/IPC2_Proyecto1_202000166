@@ -67,8 +67,6 @@ def posicion(pos, terreno, gas):
         # la siguiente posición será la primera de la lista
         nextPosicion = gas[0]
         nextPosicion.flag = True
-        # print(nextPosicion.x, nextPosicion.y,
-        #       nextPosicion.acumulado, nextPosicion.gas)
         posicion(nextPosicion, terreno, gas)
 
 
@@ -105,13 +103,45 @@ def recorrido(pos, terreno):
     print("Calculando gasolina...")
     listRecorrido = LinkedList()
     listRecorrido.append(pos)
+    gasolina = pos.acumulado
     
     while(not(pos.x == terreno.pi.x and pos.y == terreno.pi.y)):   
             bubbleSortASC(pos.posAnt)
             pos = pos.posAnt[0]
             listRecorrido.append(pos)
     terreno.lRecorrido = listRecorrido
-    print("Camino calculado")
 
-    # for r in terreno.lRecorrido.iterate():
-    #     print(r.x, r.y)
+    print("Camino calculado")
+    # graficando el terreno
+    print("Combustible necesario: " + str(gasolina))
+    graficaConsola(terreno, 1, 1, "")
+
+
+def graficaConsola(terreno, i, j, cadena):
+    # i y j empezaran en 1, 1; y la cadena en ""
+    if (terreno.dim.y + 1) == i:
+        # si la dimensión en y (m) es m + 1 es porque ya se ha llenado 
+        # entonces termina la recursivida y pasa a imprimir la matriz
+        print(cadena)       
+    else:
+        for pos in terreno.posiciones.iterate():
+            if pos.y == i and pos.x == j:
+                flag = False
+                for ruta in terreno.lRecorrido.iterate():
+                    if pos.x == ruta.x and pos.y == ruta.y:
+                        # si la posición es parte de la ruta se pondrá un 1
+                        cadena += "|1|"
+                        flag = True
+                        break
+                if flag == False:
+                    # si no, se pondrá un 0
+                    cadena += "|0|"
+                if terreno.dim.x == j:
+                    cadena += "\n"
+                    i += 1 # pasa a la siguiente fila    
+                    j = 0 # reinicia las columnas
+                j += 1 # pasa la siguiente columna
+        graficaConsola(terreno, i, j, cadena)   
+                    
+                    
+            

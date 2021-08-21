@@ -1,6 +1,7 @@
 from Archivos import cargarArchivo, crearArchivo
 from Algoritmo import camino
 from ListaEnlazada import LinkedList
+from Grafica import graficaG
 
 # menú
 def menu(listTerrenos):
@@ -8,15 +9,15 @@ def menu(listTerrenos):
         menu = int(input("Eliga una opción:\n"))
         print("\n\n")
         if(menu == 1):
-            listTerrenos = cargarArchivos(listTerrenos)           
+            listTerrenos = cargarArchivos(listTerrenos)        
         elif(menu == 2):
             procesarTerreno(listTerrenos)
         elif(menu == 3):
             crearArchivos(listTerrenos)
         elif(menu == 4):
             datosEstudiante()
-        elif(menu == 5):
-            print("HOLA3")
+        elif(menu == 5): 
+            reportes(listTerrenos)
         elif(menu == 6):
             exit()
         else:
@@ -45,7 +46,7 @@ def crearArchivos(listTerrenos):
 
 
 def datosEstudiante():
-    print("==================== Datos del Estudiante================")
+    print("==================== DATOS DEL ESTUDIANTE ================")
     print(">Gerson Rubén Quiroa del Cid")
     print(">202000166")
     print(">Introducción a la programación y computación 2 sección A")
@@ -53,6 +54,7 @@ def datosEstudiante():
     print(">Cuarto semestre")
 
 def procesarTerreno(listTerrenos):
+    print("==================== PROCESAR TERRENO ================")
     flag = False
     if listTerrenos.size != 0:
         nombreTerreno = input("Ingrese el nombre del terreno que quiere analizar: \n")
@@ -78,6 +80,20 @@ def procesarTerreno(listTerrenos):
     return caminoTerreno
     
 
+def reportes(listTerrenos):
+    print("==================== REPORTES ================")
+    if listTerrenos.size != 0:
+        print("Elija el terreno que desea graficar")
+        i = 1
+        for terreno in listTerrenos.iterate():
+            print(str(i) + ") " + terreno.nombre)
+            i += 1
+
+        iTerreno = int(input(">"))
+        #graficaG(listTerrenos[iTerreno - 1])
+
+    else: 
+        print("No se ha cargado ningún terreno.")
 
 # menú principal y main del programa
 # variable global        
