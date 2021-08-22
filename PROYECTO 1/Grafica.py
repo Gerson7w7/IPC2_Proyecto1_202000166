@@ -7,7 +7,8 @@ def graficaG(terreno):
     archivo = open("grafo.dot", "w")
     archivo.write("graph grafo{\n")
     archivo.write(f"label={terreno.nombre}\n")
-    # archivo.write('11[label="5"]\n12[label=5]')
+
+    # se pone un label a cada posición con la gasolina de la misma
     for pos in terreno.posiciones.iterate():
         archivo.write(str(pos.x) + str(pos.y) + "[label=" + str(pos.gas) + "]\n")
 
