@@ -30,8 +30,8 @@ def menu(listTerrenos):
 def cargarArchivos(listTerrenos):
     print("====================CARGAR ARCHIVOS====================")
     print("Ingrese la ruta absoluta del archivo:")
-    #ruta = input()
-    ruta = "C:\\Users\\gerso\\Desktop\\PROGRAMACIÓN\\Python\\IPC2\\IPC2_Proyecto1\\PROYECTO 1\\terrenos.xml"
+    ruta = input()
+    # ruta = "C:\\Users\\gerso\\Desktop\\PROGRAMACIÓN\\Python\\IPC2\\IPC2_Proyecto1\\PROYECTO 1\\terrenos.xml"
     listTerrenos = cargarArchivo(ruta, listTerrenos)
     return listTerrenos
 
@@ -40,8 +40,8 @@ def crearArchivos(listTerrenos):
     print("====================ESCRIBIR ARCHIVOS====================")
     print("Ingrese una ruta absoluta y nombre donde se guardará:")
     print("NOTA: Solo se escribirán los terrenos que hayan sido analizados.")
-    # ruta = input()
-    ruta = "C:\\Users\\gerso\\Desktop\\PROGRAMACIÓN\\Python\\IPC2\\IPC2_Proyecto1\\PROYECTO 1\\prueba.xml"
+    ruta = input()
+    # ruta = "C:\\Users\\gerso\\Desktop\\PROGRAMACIÓN\\Python\\IPC2\\IPC2_Proyecto1\\PROYECTO 1\\prueba.xml"
     crearArchivo(ruta, listTerrenos)
 
 
@@ -54,8 +54,8 @@ def datosEstudiante():
     print(">Cuarto semestre")
 
 def procesarTerreno(listTerrenos):
-    print("==================== PROCESAR TERRENO ================")
     flag = False
+    print("==================== PROCESAR TERRENO ================")
     if listTerrenos.size != 0:
         nombreTerreno = input("Ingrese el nombre del terreno que quiere analizar: \n")
 
@@ -65,19 +65,16 @@ def procesarTerreno(listTerrenos):
             if terreno.nombre == nombreTerreno:
                 if terreno.analizado == False:
                     terreno.analizado = True
-                    caminoTerreno = camino(terreno)
                     flag = True
-                    # verificando si se procesó el terreno o no se encontró        
-                    if flag:
-                        print("Terreno procesado con éxito! :D")
-                    else: 
-                        print("No se ha encontrado el terreno, intente con otro nombre.")
+                    camino(terreno)
+                    print("Terreno procesado con éxito! :D")                   
                 else: 
                     print("Este terreno ya ha sido analizado")
                     break
+        if not flag: 
+            print("No se ha encontrado el terreno, intente con otro nombre.")
     else:
         print("No se ha cargado ningún archivo")
-    return caminoTerreno
     
 
 def reportes(listTerrenos):
@@ -90,7 +87,7 @@ def reportes(listTerrenos):
             i += 1
 
         iTerreno = int(input(">"))
-        #graficaG(listTerrenos[iTerreno - 1])
+        graficaG(listTerrenos[iTerreno - 1])
 
     else: 
         print("No se ha cargado ningún terreno.")
