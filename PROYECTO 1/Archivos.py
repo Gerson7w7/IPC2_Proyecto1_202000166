@@ -112,7 +112,7 @@ def crearArchivo(ruta, listTerrenos):
                 posicion = xmlDoc.createElement("posicion")
                 posicion.setAttribute("x", str(pos.x))
                 posicion.setAttribute("y", str(pos.y))
-                posicion.appendChild(xmlDoc.createTextNode("1"))
+                posicion.appendChild(xmlDoc.createTextNode(str(pos.gas)))
                 # agregamos x, y al sub nodo posicioninicial
                 terr.appendChild(posicion)
 
